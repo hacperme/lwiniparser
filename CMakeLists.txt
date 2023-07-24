@@ -47,3 +47,13 @@ target_link_libraries(${target} PRIVATE
     lwiniparser
 )
 
+set(target test)
+add_executable(${target}
+    tests/test.c
+)
+target_include_directories(${target} PRIVATE
+    inc
+)
+target_link_libraries(${target} PRIVATE
+    lwiniparser
+)
