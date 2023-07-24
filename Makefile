@@ -8,7 +8,10 @@ build:CMakeLists.txt
 test:build
 	./build/build_out/target/test
 
+memcheck:build
+	valgrind --leak-check=full --show-leak-kinds=all ./build/build_out/target/test
+
 clean:
 	$(RM) build
 
-.PHONY:build clean
+.PHONY:build clean test memcheck
