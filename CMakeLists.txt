@@ -36,7 +36,7 @@ target_include_directories(${target} PRIVATE
 )
 
 
-set(target example)
+set(target example1)
 add_executable(${target}
     examples/example1.c
 )
