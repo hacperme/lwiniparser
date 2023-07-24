@@ -350,6 +350,7 @@ int lwini_destroy(lwini_t *ini)
     int ret = 0;
     lwini_t *section = NULL;
     lwini_t *value = NULL;
+    lwini_t *tmp = NULL;
 
     if (ini == NULL)
     {
@@ -372,7 +373,9 @@ int lwini_destroy(lwini_t *ini)
             {
                 free(value->value);
             }
+            tmp = value;
             value = value->next;
+            free(tmp);
         }
         if (section->key)
         {
@@ -382,7 +385,9 @@ int lwini_destroy(lwini_t *ini)
         {
             free(section->value);
         }
+        tmp = section;
         section = section->next;
+        free(tmp);
     }
 
 exit:
