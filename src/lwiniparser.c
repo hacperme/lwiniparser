@@ -21,6 +21,11 @@
  * =================================================================================
  */
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -878,3 +883,7 @@ exit:
 
     return ret;
 }
+
+#ifdef __cplusplus
+}
+#endif

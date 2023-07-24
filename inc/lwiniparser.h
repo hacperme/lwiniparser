@@ -24,6 +24,10 @@
 #ifndef __LWINIPARSER_H__
 #define __LWINIPARSER_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -82,5 +86,8 @@ int lwini_remove_value_by_section(lwini_t *ini, const char *section, const char 
 
 int lwini_format(lwini_t *ini, char *buffer, uint32_t len);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __LWINIPARSER_H__ */
