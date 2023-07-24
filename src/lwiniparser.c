@@ -53,8 +53,17 @@ static int lwini_read_line(const char *buffer, uint32_t len, char **line)
     p = strchr(buffer, '\n');
     if (p == NULL)
     {
-        LWINI_LOG_PRINTF("not found \\n\n");
-        goto exit;
+        
+        if(buffer[len] == '\0')
+        {
+            line_len = len;
+        }
+        else
+        {
+            LWINI_LOG_PRINTF("not found \\n\n");
+            goto exit;
+        }
+        
     }
     else
     {
@@ -311,22 +320,16 @@ lwini_t *lwini_parse(const char *buffer, uint32_t len)
             break;
         default:
         parse_err:
-            if (section)
-            {
-                free(section);
-            }
-            if (key)
-            {
-                free(key);
-            }
-            if (value)
-            {
-                free(value);
-            }
-            lwini_destroy(ini);
-            ini = NULL;
-            free(line);
-            line = NULL;
+            if (section) free(section);
+            
+            if (key) free(key);
+            
+            if (value) free(value);
+            
+            if(ini) lwini_destroy(ini), ini = NULL;
+            
+            if(line) free(line), line = NULL;
+            
             goto exit;
         }
 
