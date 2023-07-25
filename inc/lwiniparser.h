@@ -35,8 +35,13 @@ extern "C" {
 
 #define LWINI_PARSER_VERSION "1.0.0"
 
-#define LWINI_LOG_PRINTF(fmt, ...) printf("[%s][%d]"fmt"\r\n",__FUNCTION__, __LINE__,##__VA_ARGS__)
+#define LWINI_DEBUG 0
 
+#if LWINI_DEBUG
+#define LWINI_LOG_PRINTF(fmt, ...) printf("[%s][%d]"fmt"\r\n",__FUNCTION__, __LINE__,##__VA_ARGS__)
+#else
+#define LWINI_LOG_PRINTF(fmt, ...)
+#endif
 typedef enum
 {
     LWINI_TYPE_SECTION = 0,

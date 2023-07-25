@@ -312,6 +312,10 @@ static void test_parser_abnormal(void)
     test_data = "\r\n[ test ]\r\n keyhff ie \r\n key =123\r\n";
     ini = lwini_parse(test_data, strlen(test_data));
     TEST_ASSERT_EQU_TRUE(ini == NULL);
+
+    test_data = "[tes;tsec]\r\nkey=123\r\n";
+    ini = lwini_parse(test_data, strlen(test_data));
+    TEST_ASSERT_EQU_TRUE(ini == NULL);
 }
 
 
