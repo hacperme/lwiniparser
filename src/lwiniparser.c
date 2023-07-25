@@ -171,6 +171,20 @@ static int lwini_parse_line(const char *line, lwini_parse_type_t *type, char **s
 
     lwini_strip_line(new_line);
 
+    // remwoe comment
+    pos = strchr(new_line, ';');
+    if (pos != NULL)
+    {
+        *pos = '\0';
+    }
+
+    pos = strchr(new_line, '#');
+    if (pos != NULL)
+    {
+        *pos = '\0';
+    }
+
+
     line_len = strlen(new_line);
     if (line_len == 0 || new_line[0] == '\r' || new_line[0] == '\n')
     {
@@ -379,7 +393,7 @@ int lwini_destroy(lwini_t *ini)
                 free(value->value);
             }
             tmp = value;
-            value = value->next;
+            value = value->child;
             free(tmp);
         }
         if (section->key)
