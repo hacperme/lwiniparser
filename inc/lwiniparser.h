@@ -24,6 +24,10 @@
 #ifndef __LWINIPARSER_H__
 #define __LWINIPARSER_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -31,8 +35,13 @@
 
 #define LWINI_PARSER_VERSION "1.0.0"
 
-#define LWINI_LOG_PRINTF(fmt, ...) printf("[%s][%d]"fmt"\r\n",__FUNCTION__, __LINE__,##__VA_ARGS__)
+#define LWINI_DEBUG 0
 
+#if LWINI_DEBUG
+#define LWINI_LOG_PRINTF(fmt, ...) printf("[%s][%d]"fmt"\r\n",__FUNCTION__, __LINE__,##__VA_ARGS__)
+#else
+#define LWINI_LOG_PRINTF(fmt, ...)
+#endif
 typedef enum
 {
     LWINI_TYPE_SECTION = 0,
@@ -82,5 +91,8 @@ int lwini_remove_value_by_section(lwini_t *ini, const char *section, const char 
 
 int lwini_format(lwini_t *ini, char *buffer, uint32_t len);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __LWINIPARSER_H__ */

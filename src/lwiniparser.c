@@ -21,6 +21,11 @@
  * =================================================================================
  */
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -53,8 +58,17 @@ static int lwini_read_line(const char *buffer, uint32_t len, char **line)
     p = strchr(buffer, '\n');
     if (p == NULL)
     {
-        LWINI_LOG_PRINTF("not found \\n\n");
-        goto exit;
+        
+        if(buffer[len] == '\0')
+        {
+            line_len = len;
+        }
+        else
+        {
+            LWINI_LOG_PRINTF("not found \\n\n");
+            goto exit;
+        }
+        
     }
     else
     {
@@ -156,6 +170,20 @@ static int lwini_parse_line(const char *line, lwini_parse_type_t *type, char **s
     }
 
     lwini_strip_line(new_line);
+
+    // remwoe comment
+    pos = strchr(new_line, ';');
+    if (pos != NULL)
+    {
+        *pos = '\0';
+    }
+
+    pos = strchr(new_line, '#');
+    if (pos != NULL)
+    {
+        *pos = '\0';
+    }
+
 
     line_len = strlen(new_line);
     if (line_len == 0 || new_line[0] == '\r' || new_line[0] == '\n')
@@ -311,22 +339,16 @@ lwini_t *lwini_parse(const char *buffer, uint32_t len)
             break;
         default:
         parse_err:
-            if (section)
-            {
-                free(section);
-            }
-            if (key)
-            {
-                free(key);
-            }
-            if (value)
-            {
-                free(value);
-            }
-            lwini_destroy(ini);
-            ini = NULL;
-            free(line);
-            line = NULL;
+            if (section) free(section);
+            
+            if (key) free(key);
+            
+            if (value) free(value);
+            
+            if(ini) lwini_destroy(ini), ini = NULL;
+            
+            if(line) free(line), line = NULL;
+            
             goto exit;
         }
 
@@ -347,6 +369,7 @@ int lwini_destroy(lwini_t *ini)
     int ret = 0;
     lwini_t *section = NULL;
     lwini_t *value = NULL;
+    lwini_t *tmp = NULL;
 
     if (ini == NULL)
     {
@@ -369,7 +392,9 @@ int lwini_destroy(lwini_t *ini)
             {
                 free(value->value);
             }
-            value = value->next;
+            tmp = value;
+            value = value->child;
+            free(tmp);
         }
         if (section->key)
         {
@@ -379,7 +404,9 @@ int lwini_destroy(lwini_t *ini)
         {
             free(section->value);
         }
+        tmp = section;
         section = section->next;
+        free(tmp);
     }
 
 exit:
@@ -870,3 +897,7 @@ exit:
 
     return ret;
 }
+
+#ifdef __cplusplus
+}
+#endif

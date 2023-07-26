@@ -21,3 +21,7 @@ jobs:
     - name: Build
       # Build your program with the given configuration
       run: make
+      
+    - name: Test
+      # run test program
+      run: make test
